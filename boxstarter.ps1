@@ -215,7 +215,7 @@ $startLayoutPath = "$env:USERPROFILE\Desktop\StartLayout.xml"
 </DefaultLayoutOverride>
 </LayoutModificationTemplate>
 "@ | Out-File $startLayoutPath
-Import-StartLayout -LayoutPath $startLayoutPath
+Import-StartLayout -LayoutPath $startLayoutPath -MountPath C:\
 Remove-Item $startLayoutPath
 
 #--- Restore Temporary Settings ---
