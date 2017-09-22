@@ -47,123 +47,61 @@ choco install sharex
 
 #--- Uninstall unecessary applications that come with Windows out of the box ---
 
-# 3D Builder
-Get-AppxPackage Microsoft.3DBuilder | Remove-AppxPackage
-
-# Alarms
-Get-AppxPackage Microsoft.WindowsAlarms | Remove-AppxPackage
-
-# Autodesk
-Get-AppxPackage *Autodesk* | Remove-AppxPackage
-
-# Bing Weather, News, Sports, and Finance (Money):
-Get-AppxPackage Microsoft.BingFinance | Remove-AppxPackage
-Get-AppxPackage Microsoft.BingNews | Remove-AppxPackage
-Get-AppxPackage Microsoft.BingSports | Remove-AppxPackage
-Get-AppxPackage Microsoft.BingWeather | Remove-AppxPackage
-
-# BubbleWitch
-Get-AppxPackage *BubbleWitch* | Remove-AppxPackage
-
-# Candy Crush
-Get-AppxPackage king.com.CandyCrush* | Remove-AppxPackage
-
-# Comms Phone
-Get-AppxPackage Microsoft.CommsPhone | Remove-AppxPackage
-
-# Dell
-Get-AppxPackage *Dell* | Remove-AppxPackage
-
-# Dropbox
-Get-AppxPackage *Dropbox* | Remove-AppxPackage
-
-# Facebook
-Get-AppxPackage *Facebook* | Remove-AppxPackage
-
-# Feedback Hub
-Get-AppxPackage Microsoft.WindowsFeedbackHub | Remove-AppxPackage
-
-# Get Started
-Get-AppxPackage Microsoft.Getstarted | Remove-AppxPackage
-
-# Keeper
-Get-AppxPackage *Keeper* | Remove-AppxPackage
-
-# Mail & Calendar
-Get-AppxPackage microsoft.windowscommunicationsapps | Remove-AppxPackage
-
-# Maps
-Get-AppxPackage Microsoft.WindowsMaps | Remove-AppxPackage
-
-# March of Empires
-Get-AppxPackage *MarchofEmpires* | Remove-AppxPackage
-
-# McAfee Security
-Get-AppxPackage *McAfee* | Remove-AppxPackage
+@(
+    'Microsoft.Messaging'
+    'Minecraft'
+    'Netflix'
+    'Microsoft.MicrosoftOfficeHub'
+    'Microsoft.OneConnect'
+    'Microsoft.Office.OneNote'
+    'Microsoft.People'
+    'Microsoft.WindowsPhone'
+    'Microsoft.Windows.Photos'
+    'Plex'
+    'Microsoft.SkypeApp'
+    'Microsoft.WindowsSoundRecorder'
+    'Solitaire'
+    'Microsoft.MicrosoftStickyNotes'
+    'Microsoft.Office.Sway'
+    'Twitter'
+    'Microsoft.XboxApp'
+    'Microsoft.XboxIdentityProvider'
+    'Microsoft.ZuneMusic'
+    'Microsoft.ZuneVideo'
+    'Microsoft.3DBuilder'
+    'Microsoft.WindowsAlarms'
+    'Autodesk'
+    'Microsoft.BingFinance'
+    'Microsoft.BingNews'
+    'Microsoft.BingSports'
+    'Microsoft.BingWeather'
+    'BubbleWitch'
+    'CandyCrush'
+    'Microsoft.CommsPhone'
+    'Dell'
+    'Dropbox'
+    'Facebook'
+    'Microsoft.WindowsFeedbackHub'
+    'Microsoft.Getstarted'
+    'Keeper'
+    'Microsoft.WindowsCommunicationsApps' # Mail & Calendar
+    'Microsoft.WindowsMaps'
+    'MarchofEmpires'
+    'McAfee'
+) | ForEach-Object { Remove-AppxPackage *$_* }
 
 # Uninstall McAfee Security App
-$mcafee = gci "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall" | foreach { gp $_.PSPath } | ? { $_ -match "McAfee Security" } | select UninstallString
+$mcafee = Get-ChildItem "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall" |
+    ForEach-Object { Get-ItemProperty $_.PSPath } |
+    Where-Object { $_ -match "McAfee Security" } |
+    Select-Object UninstallString
 if ($mcafee) {
-	$mcafee = $mcafee.UninstallString -Replace "C:\Program Files\McAfee\MSC\mcuihost.exe",""
-	Write "Uninstalling McAfee..."
-	start-process "C:\Program Files\McAfee\MSC\mcuihost.exe" -arg "$mcafee" -Wait
+    $mcafee = $mcafee.UninstallString -Replace "C:\Program Files\McAfee\MSC\mcuihost.exe", ""
+    Write-Output "Uninstalling McAfee..."
+    Start-Process "C:\Program Files\McAfee\MSC\mcuihost.exe" -arg "$mcafee" -Wait
 }
 
-# Messaging
-Get-AppxPackage Microsoft.Messaging | Remove-AppxPackage
 
-# Minecraft
-Get-AppxPackage *Minecraft* | Remove-AppxPackage
-
-# Netflix
-Get-AppxPackage *Netflix* | Remove-AppxPackage
-
-# Office Hub
-Get-AppxPackage Microsoft.MicrosoftOfficeHub | Remove-AppxPackage
-
-# One Connect
-Get-AppxPackage Microsoft.OneConnect | Remove-AppxPackage
-
-# OneNote
-Get-AppxPackage Microsoft.Office.OneNote | Remove-AppxPackage
-
-# People
-Get-AppxPackage Microsoft.People | Remove-AppxPackage
-
-# Phone
-Get-AppxPackage Microsoft.WindowsPhone | Remove-AppxPackage
-
-# Photos
-Get-AppxPackage Microsoft.Windows.Photos | Remove-AppxPackage
-
-# Plex
-Get-AppxPackage *Plex* | Remove-AppxPackage
-
-# Skype (Metro version)
-Get-AppxPackage Microsoft.SkypeApp | Remove-AppxPackage
-
-# Sound Recorder
-Get-AppxPackage Microsoft.WindowsSoundRecorder | Remove-AppxPackage
-
-# Solitaire
-Get-AppxPackage *Solitaire* | Remove-AppxPackage
-
-# Sticky Notes
-Get-AppxPackage Microsoft.MicrosoftStickyNotes | Remove-AppxPackage
-
-# Sway
-Get-AppxPackage Microsoft.Office.Sway | Remove-AppxPackage
-
-# Twitter
-Get-AppxPackage *Twitter* | Remove-AppxPackage
-
-# Xbox
-Get-AppxPackage Microsoft.XboxApp | Remove-AppxPackage
-Get-AppxPackage Microsoft.XboxIdentityProvider | Remove-AppxPackage
-
-# Zune Music, Movies & TV
-Get-AppxPackage Microsoft.ZuneMusic | Remove-AppxPackage
-Get-AppxPackage Microsoft.ZuneVideo | Remove-AppxPackage
 
 #--- Windows Settings ---
 # Some from: @NickCraver's gist https://gist.github.com/NickCraver/7ebf9efbfd0c3eab72e9
@@ -201,7 +139,7 @@ Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
 # Better File Explorer
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -Value 1		
 Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneShowAllFolders -Value 1		
-Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name MMTaskbarMode -Value 2
+# Set-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name MMTaskbarMode -Value 2
 
 # These make "Quick Access" behave much closer to the old "Favorites"
 # Disable Quick Access: Recent Files
@@ -214,7 +152,7 @@ Set-ItemProperty -Path HKCU:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer 
 
 # Disable the Lock Screen (the one before password prompt - to prevent dropping the first character)
 If (-Not (Test-Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization)) {
-	New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows -Name Personalization | Out-Null
+    New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows -Name Personalization | Out-Null
 }
 Set-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Personalization -Name NoLockScreen -Type DWord -Value 1
 # To Restore:
@@ -227,7 +165,7 @@ Set-ItemProperty -Path 'HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\P
 
 # Use the Windows 7-8.1 Style Volume Mixer
 If (-Not (Test-Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\MTCUVC")) {
-	New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name MTCUVC | Out-Null
+    New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name MTCUVC | Out-Null
 }
 Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\MTCUVC" -Name EnableMtcUvc -Type DWord -Value 0
 # To Restore (Windows 10 Style Volume Control):
@@ -247,10 +185,3 @@ Set-ItemProperty -Path "HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\
 Enable-UAC
 Enable-MicrosoftUpdate
 Install-WindowsUpdate -acceptEula
-
-#--- Rename the Computer ---
-# Requires restart, or add the -Restart flag
-$computername = "acidburn"
-if ($env:computername -ne $computername) {
-	Rename-Computer -NewName $computername
-}
