@@ -14,7 +14,7 @@
 #
 # Learn more: http://boxstarter.org/Learn/WebLauncher
 
-# Install: Install-BoxstarterPackage -PackageName https://raw.githubusercontent.com/jahands/boxes/master/boxstarter.ps1 -DisableReboots
+# Install-BoxstarterPackage -PackageName https://raw.githubusercontent.com/jahands/boxes/master/boxstarter.ps1 -DisableReboots
 
 #---- TEMPORARY ---
 Disable-UAC
