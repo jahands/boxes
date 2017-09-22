@@ -14,6 +14,8 @@
 #
 # Learn more: http://boxstarter.org/Learn/WebLauncher
 
+# Install: Install-BoxstarterPackage -PackageName https://raw.githubusercontent.com/jahands/boxes/master/boxstarter.ps1 -DisableReboots
+
 #---- TEMPORARY ---
 Disable-UAC
 
@@ -88,7 +90,7 @@ choco install sharex
     'Microsoft.WindowsMaps'
     'MarchofEmpires'
     'McAfee'
-) | ForEach-Object { Remove-AppxPackage *$_* }
+) | ForEach-Object { Get-AppxPackage *$_* | Remove-AppxPackage }
 
 # Uninstall McAfee Security App
 $mcafee = Get-ChildItem "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall" |
