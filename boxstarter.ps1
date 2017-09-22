@@ -193,9 +193,10 @@ If (-Not (Test-Path "HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Adv
 Set-ItemProperty -Path "HKCU:SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced\People" -Name PeopleBand -Type DWord -Value 0
 
 #--- Remove junk from Start menu ---
-Stop-Service -name tiledatamodelsvc
+Stop-Service -Name tiledatamodelsvc
 # Remove folder containing tile data.
 Remove-item -Force -Recurse C:\Users\jh\AppData\Local\TileDataLayer\
+Start-Service -Name tiledatamodelsvc
 # Restart explorer to apply changes
 Stop-Process -Name explorer
 
