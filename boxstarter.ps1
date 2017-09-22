@@ -36,14 +36,23 @@ choco install Microsoft-Windows-Subsystem-Linux -source windowsfeatures
 
 #--- Tools ---
 # choco install git -params '"/GitAndUnixToolsOnPath /WindowsTerminal"' -y
-# choco install poshgit
+choco install poshgit
 choco install sysinternals -y
 # choco install vim
+choco install golang
+choco install git.install /GitOnlyOnPath /NoShellIntegration
+choco install visualstudiocode
+choco install conemu
+choco install sublimetext3
+choco install 7zip
+choco install procmon
 
 #--- Apps ---
 choco install googlechrome
 choco install docker-for-windows
 choco install sharex
+choco install vlc
+
 # choco install microsoft-teams
 # choco install vcxsrv
 
